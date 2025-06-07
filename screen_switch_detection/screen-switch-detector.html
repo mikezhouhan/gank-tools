@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>切屏检测器</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">切屏检测器</h1>
+            <p class="subtitle">实时监控页面焦点状态和切屏行为</p>
+        </header>
+
+        <main class="main-content">
+            <!-- 状态显示区域 -->
+            <div class="status-section">
+                <div class="status-card">
+                    <div class="status-indicator" id="statusIndicator">
+                        <div class="status-dot" id="statusDot"></div>
+                        <span class="status-text" id="statusText">页面活跃</span>
+                    </div>
+                    <div class="status-time" id="statusTime">
+                        当前会话时长: <span id="sessionTime">00:00:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 统计信息区域 -->
+            <div class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="switchCount">0</div>
+                        <div class="stat-label">切屏次数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalAwayTime">00:00</div>
+                        <div class="stat-label">离开总时长</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="longestAwayTime">00:00</div>
+                        <div class="stat-label">最长离开时长</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="focusPercentage">100%</div>
+                        <div class="stat-label">专注度</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 控制按钮区域 -->
+            <div class="controls-section">
+                <button class="btn btn-primary" id="startBtn">开始监控</button>
+                <button class="btn btn-secondary" id="pauseBtn" disabled>暂停监控</button>
+                <button class="btn btn-danger" id="resetBtn">重置数据</button>
+                <button class="btn btn-info" id="fullscreenBtn">进入全屏</button>
+            </div>
+
+            <!-- 设置区域 -->
+            <div class="settings-section">
+                <h3 class="section-title">设置选项</h3>
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <input type="checkbox" id="soundAlert" class="setting-checkbox">
+                            <span class="checkmark"></span>
+                            声音提醒
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <input type="checkbox" id="visualAlert" class="setting-checkbox" checked>
+                            <span class="checkmark"></span>
+                            视觉提醒
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <input type="checkbox" id="recordHistory" class="setting-checkbox" checked>
+                            <span class="checkmark"></span>
+                            记录历史
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <input type="checkbox" id="fullscreenDetection" class="setting-checkbox">
+                            <span class="checkmark"></span>
+                            全屏检测
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 历史记录区域 -->
+            <div class="history-section">
+                <h3 class="section-title">切屏历史记录</h3>
+                <div class="history-controls">
+                    <button class="btn btn-small" id="clearHistoryBtn">清空历史</button>
+                    <button class="btn btn-small" id="exportBtn">导出数据</button>
+                </div>
+                <div class="history-list" id="historyList">
+                    <div class="history-empty">暂无切屏记录</div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 提醒弹窗 -->
+        <div class="alert-overlay" id="alertOverlay">
+            <div class="alert-modal">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-title">检测到切屏行为</div>
+                <div class="alert-message">您已离开当前页面，请保持专注！</div>
+                <button class="btn btn-primary" id="alertCloseBtn">我知道了</button>
+            </div>
+        </div>
+
+        <!-- 音频元素 -->
+        <audio id="alertSound" preload="auto">
+            <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+        </audio>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
