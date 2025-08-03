@@ -19,6 +19,89 @@ body {
     padding: 20px;
 }
 
+/* 导航栏样式 */
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 15px 25px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nav-left, .nav-right {
+    flex: 1;
+}
+
+.nav-center {
+    flex: 1;
+    text-align: center;
+}
+
+.nav-brand {
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.nav-home {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-home:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(-3px);
+}
+
+.nav-main-site {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    animation: pulse-nav 2s infinite;
+}
+
+.nav-main-site:hover {
+    background: linear-gradient(135deg, #ff5252 0%, #d84315 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+}
+
+.nav-right {
+    text-align: right;
+}
+
+@keyframes pulse-nav {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(255, 107, 107, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+    }
+}
+
+@media (max-width: 768px) {
+    .navigation {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .nav-left, .nav-center, .nav-right {
+        flex: none;
+    }
+}
+
 /* 头部样式 */
 .header {
     text-align: center;
