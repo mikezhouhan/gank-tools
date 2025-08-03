@@ -141,29 +141,6 @@
             font-weight: bold;
         }
 
-        .tool-status {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            margin-bottom: 20px;
-        }
-
-        .status-available {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status-demo {
-            background: #cce5ff;
-            color: #004085;
-        }
-
-        .status-coming {
-            background: #fff3cd;
-            color: #856404;
-        }
 
         .tool-actions {
             display: flex;
@@ -239,35 +216,6 @@
             opacity: 1;
         }
 
-        .stats {
-            background: rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 40px;
-            text-align: center;
-            color: white;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-        }
-
-        .stat-item {
-            padding: 15px;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
 
         @media (max-width: 768px) {
             .header h1 {
@@ -402,30 +350,10 @@
     <div class="container">
         <header class="header">
             <h1>🛠️ Gank工具集</h1>
-            <p class="subtitle">专业的网页监控检测工具箱</p>
-            <p class="description">提供多种实用的监控和检测功能，适用于教育、测试、安全等多种场景</p>
+            <p class="subtitle">专业的反作弊检测工具箱</p>
+            <p class="description">请在使用GankInterview之前，先使用本工具集进行检测，确保共享所有操作不会触发切屏检测，并且视频共享检测不会显示软件本身。</p>
         </header>
 
-        <section class="stats">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">2</div>
-                    <div class="stat-label">可用工具</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">100%</div>
-                    <div class="stat-label">免费开源</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">0</div>
-                    <div class="stat-label">依赖库</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">24/7</div>
-                    <div class="stat-label">在线可用</div>
-                </div>
-            </div>
-        </section>
 
         <section class="main-site-banner">
             <h2>🚀 访问Gank面试官网</h2>
@@ -438,8 +366,7 @@
         <main class="tools-grid">
             <article class="tool-card screen-detection">
                 <div class="tool-icon">📱</div>
-                <h2 class="tool-title">切屏检测器</h2>
-                <span class="tool-status status-available">✅ 可用</span>
+                <h2 class="tool-title">切屏检测</h2>
                 <p class="tool-description">
                     实时监控页面焦点状态，检测用户是否切换到其他应用或标签页，提供详细的使用统计和行为分析。
                 </p>
@@ -452,15 +379,13 @@
                     <li>全屏模式支持</li>
                 </ul>
                 <div class="tool-actions">
-                    <a href="./screen_switch_detection/" class="btn btn-primary">立即使用</a>
-                    <a href="https://github.com/mikezhouhan/gank-tools" class="btn btn-outline">查看源码</a>
+                    <a href="./screen_switch_detection/" class="btn btn-primary">开始检测</a>
                 </div>
             </article>
 
             <article class="tool-card video-detection">
                 <div class="tool-icon">🎥</div>
-                <h2 class="tool-title">视频检测演示</h2>
-                <span class="tool-status status-demo">🔬 演示版</span>
+                <h2 class="tool-title">视频共享可见检测</h2>
                 <p class="tool-description">
                     基于 WebRTC 技术的屏幕共享演示工具，支持整个屏幕或特定窗口的实时共享和预览功能。
                 </p>
@@ -473,54 +398,10 @@
                     <li>跨浏览器兼容性</li>
                 </ul>
                 <div class="tool-actions">
-                    <a href="./video_detection/screen-share-demo.html" class="btn btn-secondary">体验演示</a>
-                    <a href="https://github.com/mikezhouhan/gank-tools" class="btn btn-outline">查看源码</a>
+                    <a href="./video_detection/screen-share-demo.html" class="btn btn-secondary">开始检测</a>
                 </div>
             </article>
 
-            <article class="tool-card coming-soon">
-                <div class="coming-soon-overlay">
-                    <div class="tool-icon">🔊</div>
-                    <h2 class="tool-title">音频检测器</h2>
-                    <span class="tool-status status-coming">⏳ 即将推出</span>
-                    <p class="tool-description">
-                        检测和分析用户的麦克风使用情况，监控音频输入状态，适用于在线会议和远程教学场景。
-                    </p>
-                    <ul class="tool-features">
-                        <li>实时音频输入检测</li>
-                        <li>音量级别监控</li>
-                        <li>静音状态提醒</li>
-                        <li>音频质量评估</li>
-                        <li>背景噪音分析</li>
-                        <li>多设备支持</li>
-                    </ul>
-                    <div class="tool-actions">
-                        <button class="btn btn-outline" disabled>敬请期待</button>
-                    </div>
-                </div>
-            </article>
-
-            <article class="tool-card coming-soon">
-                <div class="coming-soon-overlay">
-                    <div class="tool-icon">🖱️</div>
-                    <h2 class="tool-title">行为检测器</h2>
-                    <span class="tool-status status-coming">⏳ 即将推出</span>
-                    <p class="tool-description">
-                        监控用户的鼠标和键盘活动模式，分析用户行为特征，提供详细的交互分析报告。
-                    </p>
-                    <ul class="tool-features">
-                        <li>鼠标移动轨迹记录</li>
-                        <li>键盘输入模式分析</li>
-                        <li>点击热力图生成</li>
-                        <li>活跃度实时监控</li>
-                        <li>异常行为检测</li>
-                        <li>数据可视化展示</li>
-                    </ul>
-                    <div class="tool-actions">
-                        <button class="btn btn-outline" disabled>敬请期待</button>
-                    </div>
-                </div>
-            </article>
         </main>
 
         <footer class="footer">
@@ -551,40 +432,6 @@
             });
         });
 
-        // 统计数据动画
-        function animateNumbers() {
-            const numbers = document.querySelectorAll('.stat-number');
-            numbers.forEach(number => {
-                const target = parseInt(number.textContent);
-                if (isNaN(target)) return;
-                
-                let current = 0;
-                const increment = target / 50;
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        current = target;
-                        clearInterval(timer);
-                    }
-                    number.textContent = Math.floor(current);
-                }, 50);
-            });
-        }
-
-        // 当统计区域进入视野时开始动画
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateNumbers();
-                    observer.unobserve(entry.target);
-                }
-            });
-        });
-
-        const statsSection = document.querySelector('.stats');
-        if (statsSection) {
-            observer.observe(statsSection);
-        }
     </script>
 </body>
 </html>
