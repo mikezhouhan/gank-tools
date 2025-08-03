@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>屏幕共享演示 - 类似笔试网站</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .controls {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .status.inactive {
+            background: #e9ecef;
+            color: #6c757d;
+        }
+
+        .status.active {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .preview-section {
+            padding: 30px;
+        }
+
+        .preview-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .preview-box {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .preview-box.active {
+            border-color: #4facfe;
+            background: #f0f9ff;
+        }
+
+        .preview-box h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .preview-video {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background: #000;
+        }
+
+        .placeholder {
+            color: #6c757d;
+            font-style: italic;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .placeholder-icon {
+            font-size: 3rem;
+            opacity: 0.5;
+        }
+
+        .info-panel {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-panel h4 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .info-panel ul {
+            color: #424242;
+            padding-left: 20px;
+        }
+
+        .info-panel li {
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .preview-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🖥️ 屏幕共享演示</h1>
+            <p>支持全屏和部分屏幕共享，实时预览功能</p>
+        </div>
+
+        <div class="controls">
+            <div class="status inactive" id="status">
+                📱 未开始屏幕共享
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" id="shareFullScreen">
+                    🖥️ 共享整个屏幕
+                </button>
+                <button class="btn btn-secondary" id="shareWindow">
+                    🪟 共享应用窗口
+                </button>
+                <button class="btn btn-danger" id="stopShare" disabled>
+                    ⏹️ 停止共享
+                </button>
+            </div>
+
+            <div class="info-panel">
+                <h4>📋 使用说明</h4>
+                <ul>
+                    <li>点击"共享整个屏幕"可以共享您的完整桌面</li>
+                    <li>点击"共享应用窗口"可以选择特定的应用程序窗口</li>
+                    <li>共享开始后，您可以在下方看到实时预览</li>
+                    <li>点击"停止共享"结束屏幕共享</li>
+                    <li>⚠️ 需要现代浏览器支持（Chrome、Firefox、Edge等）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="preview-section">
+            <h2 style="text-align: center; color: #495057; margin-bottom: 20px;">
+                📺 实时预览
+            </h2>
+            
+            <div class="preview-container">
+                <div class="preview-box" id="localPreview">
+                    <h3>本地预览</h3>
+                    <div class="placeholder" id="localPlaceholder">
+                        <div class="placeholder-icon">📺</div>
+                        <p>等待开始屏幕共享...</p>
+                    </div>
+                </div>
+                
+                <div class="preview-box" id="remotePreview">
+                    <h3>远程视图模拟</h3>
+                    <div class="placeholder" id="remotePlaceholder">
+                        <div class="placeholder-icon">🌐</div>
+                        <p>这里显示其他人看到的画面</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class ScreenShareDemo {
+            constructor() {
+                this.localStream = null;
+                this.isSharing = false;
+                this.initializeElements();
+                this.bindEvents();
+            }
+
+            initializeElements() {
+                this.shareFullScreenBtn = document.getElementById('shareFullScreen');
+                this.shareWindowBtn = document.getElementById('shareWindow');
+                this.stopShareBtn = document.getElementById('stopShare');
+                this.status = document.getElementById('status');
+                this.localPreview = document.getElementById('localPreview');
+                this.remotePreview = document.getElementById('remotePreview');
+                this.localPlaceholder = document.getElementById('localPlaceholder');
+                this.remotePlaceholder = document.getElementById('remotePlaceholder');
+            }
+
+            bindEvents() {
+                this.shareFullScreenBtn.addEventListener('click', () => this.startScreenShare('screen'));
+                this.shareWindowBtn.addEventListener('click', () => this.startScreenShare('window'));
+                this.stopShareBtn.addEventListener('click', () => this.stopScreenShare());
+            }
+
+            async startScreenShare(type) {
+                try {
+                    const constraints = {
+                        video: {
+                            mediaSource: type === 'screen' ? 'screen' : 'window',
+                            width: { ideal: 1920 },
+                            height: { ideal: 1080 },
+                            frameRate: { ideal: 30 }
+                        },
+                        audio: {
+                            echoCancellation: true,
+                            noiseSuppression: true,
+                            sampleRate: 44100
+                        }
+                    };
+
+                    this.localStream = await navigator.mediaDevices.getDisplayMedia(constraints);
+                    
+                    this.createVideoElements();
+                    this.updateUI(true);
+                    this.setupStreamEndHandler();
+
+                } catch (error) {
+                    this.handleError(error);
+                }
+            }
+
+            createVideoElements() {
+                // 创建本地预览视频
+                const localVideo = document.createElement('video');
+                localVideo.srcObject = this.localStream;
+                localVideo.autoplay = true;
+                localVideo.muted = true;
+                localVideo.className = 'preview-video';
+                
+                // 创建远程预览视频（模拟）
+                const remoteVideo = document.createElement('video');
+                remoteVideo.srcObject = this.localStream;
+                remoteVideo.autoplay = true;
+                remoteVideo.muted = true;
+                remoteVideo.className = 'preview-video';
+
+                // 替换占位符
+                this.localPlaceholder.style.display = 'none';
+                this.remotePlaceholder.style.display = 'none';
+                
+                this.localPreview.appendChild(localVideo);
+                this.remotePreview.appendChild(remoteVideo);
+                
+                this.localPreview.classList.add('active');
+                this.remotePreview.classList.add('active');
+            }
+
+            setupStreamEndHandler() {
+                this.localStream.getVideoTracks()[0].addEventListener('ended', () => {
+                    this.stopScreenShare();
+                });
+            }
+
+            stopScreenShare() {
+                if (this.localStream) {
+                    this.localStream.getTracks().forEach(track => track.stop());
+                    this.localStream = null;
+                }
+
+                // 清理视频元素
+                const videos = document.querySelectorAll('.preview-video');
+                videos.forEach(video => video.remove());
+
+                // 恢复占位符
+                this.localPlaceholder.style.display = 'flex';
+                this.remotePlaceholder.style.display = 'flex';
+                
+                this.localPreview.classList.remove('active');
+                this.remotePreview.classList.remove('active');
+
+                this.updateUI(false);
+            }
+
+            updateUI(isSharing) {
+                this.isSharing = isSharing;
+                
+                if (isSharing) {
+                    this.status.textContent = '🟢 正在共享屏幕';
+                    this.status.className = 'status active';
+                    this.shareFullScreenBtn.disabled = true;
+                    this.shareWindowBtn.disabled = true;
+                    this.stopShareBtn.disabled = false;
+                } else {
+                    this.status.textContent = '📱 未开始屏幕共享';
+                    this.status.className = 'status inactive';
+                    this.shareFullScreenBtn.disabled = false;
+                    this.shareWindowBtn.disabled = false;
+                    this.stopShareBtn.disabled = true;
+                }
+            }
+
+            handleError(error) {
+                console.error('屏幕共享错误:', error);
+                
+                let errorMessage = '未知错误';
+                if (error.name === 'NotAllowedError') {
+                    errorMessage = '用户拒绝了屏幕共享权限';
+                } else if (error.name === 'NotSupportedError') {
+                    errorMessage = '浏览器不支持屏幕共享功能';
+                } else if (error.name === 'NotFoundError') {
+                    errorMessage = '没有找到可共享的屏幕或窗口';
+                } else if (error.name === 'AbortError') {
+                    errorMessage = '用户取消了屏幕共享';
+                }
+
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.innerHTML = `❌ 屏幕共享失败: ${errorMessage}`;
+                
+                this.status.parentNode.insertBefore(errorDiv, this.status.nextSibling);
+                
+                setTimeout(() => {
+                    errorDiv.remove();
+                }, 5000);
+            }
+        }
+
+        // 检查浏览器支持
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+            document.body.innerHTML = `
+                <div style="text-align: center; padding: 50px; color: #721c24; background: #f8d7da;">
+                    <h1>❌ 浏览器不支持</h1>
+                    <p>您的浏览器不支持屏幕共享功能。请使用现代浏览器如 Chrome、Firefox 或 Edge。</p>
+                </div>
+            `;
+        } else {
+            // 初始化应用
+            document.addEventListener('DOMContentLoaded', () => {
+                new ScreenShareDemo();
+            });
+        }
+    </script>
+</body>
+</html>
