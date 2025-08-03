@@ -299,6 +299,31 @@
             margin: 10px 0;
             border: 1px solid #f5c6cb;
         }
+
+        .important-notice {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            animation: pulse-notice 2s infinite;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes pulse-notice {
+            0%, 100% {
+                box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+                transform: scale(1.02);
+            }
+        }
     </style>
 </head>
 <body>
@@ -351,6 +376,10 @@
                     <li>点击"停止共享"结束屏幕共享</li>
                     <li>⚠️ 需要现代浏览器支持（Chrome、Firefox、Edge等）</li>
                 </ul>
+            </div>
+
+            <div class="important-notice">
+                🚨 请打开 GankInterview 然后观察下方的预览中是否能看见
             </div>
         </div>
 
