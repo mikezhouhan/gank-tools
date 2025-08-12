@@ -96,6 +96,10 @@
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         }
 
+        .tool-card.keyboard-detection::before {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
         .tool-card.coming-soon::before {
             background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
         }
@@ -349,6 +353,18 @@
 
                 <div class="tool-actions">
                     <a href="./video_detection/screen-share-demo.html" class="btn btn-secondary">开始检测</a>
+                </div>
+            </article>
+
+            <article class="tool-card keyboard-detection">
+                <div class="tool-icon">⌨️</div>
+                <h2 class="tool-title">键盘事件检测</h2>
+                <p class="tool-description">
+                    实时捕获和分析键盘事件，用于测试键盘输入行为是否会被监控系统检测。支持详细的按键信息记录和导出功能。
+                </p>
+
+                <div class="tool-actions">
+                    <a href="./keyboard_detection/keyboard-event-recorder.html" class="btn btn-primary">开始检测</a>
                 </div>
             </article>
 

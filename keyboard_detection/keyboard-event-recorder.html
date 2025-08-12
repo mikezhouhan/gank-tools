@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>键盘事件记录器</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: 16px;
+      opacity: 0.95;
+    }
+
+    .controls {
+      padding: 30px;
+      background: #f8f9fa;
+      border-bottom: 2px solid #e9ecef;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .control-group label {
+      font-weight: 600;
+      color: #495057;
+      font-size: 14px;
+    }
+
+    .checkbox-group {
+      display: flex;
+      gap: 20px;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .checkbox-label input {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .input-area {
+      padding: 30px;
+      background: white;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+      border: 2px solid #dee2e6;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .input-field::placeholder {
+      color: #adb5bd;
+    }
+
+    .stats {
+      padding: 20px 30px;
+      background: #f8f9fa;
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: #6c757d;
+    }
+
+    .stat-value {
+      font-size: 18px;
+      font-weight: 600;
+      color: #495057;
+      background: white;
+      padding: 4px 12px;
+      border-radius: 6px;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    .events-container {
+      padding: 30px;
+    }
+
+    .events-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .events-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #495057;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+      background: #e9ecef;
+      color: #495057;
+    }
+
+    .btn-secondary:hover {
+      background: #dee2e6;
+    }
+
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #c82333;
+    }
+
+    .events-area {
+      background: #f8f9fa;
+      border: 2px solid #dee2e6;
+      border-radius: 8px;
+      padding: 15px;
+      height: 400px;
+      overflow-y: auto;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .event-item {
+      background: white;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      border-left: 4px solid #667eea;
+      transition: all 0.2s;
+    }
+
+    .event-item:hover {
+      transform: translateX(5px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .event-type {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      margin-right: 10px;
+      font-size: 12px;
+    }
+
+    .event-keydown {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .event-keyup {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .event-keypress {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+
+    .event-details {
+      display: inline-flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .event-detail {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .detail-label {
+      color: #6c757d;
+      font-size: 11px;
+    }
+
+    .detail-value {
+      color: #495057;
+      font-weight: 600;
+      background: #e9ecef;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    .modifier-key {
+      display: inline-block;
+      padding: 2px 6px;
+      background: #ffc107;
+      color: #000;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-left: 5px;
+    }
+
+    .separator {
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #dee2e6, transparent);
+      margin: 10px 0;
+    }
+
+    .key-visual {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      min-width: 150px;
+      text-align: center;
+      transition: all 0.3s;
+      display: none;
+    }
+
+    .key-visual.active {
+      display: block;
+      animation: bounceIn 0.5s;
+    }
+
+    .key-visual-label {
+      font-size: 12px;
+      color: #6c757d;
+      margin-bottom: 10px;
+    }
+
+    .key-visual-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #667eea;
+    }
+
+    @keyframes bounceIn {
+      0% {
+        transform: scale(0.3);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      70% {
+        transform: scale(0.9);
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #667eea;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #764ba2;
+    }
+
+    /* 导航栏样式 */
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 15px 25px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-left, .nav-right {
+      flex: 1;
+    }
+
+    .nav-center {
+      flex: 1;
+      text-align: center;
+    }
+
+    .nav-brand {
+      color: white;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    .nav-home {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-home:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateX(-3px);
+    }
+
+    .nav-main-site {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+      animation: pulse-nav 2s infinite;
+    }
+
+    .nav-main-site:hover {
+      background: linear-gradient(135deg, #ff5252 0%, #d84315 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+    }
+
+    .nav-right {
+      text-align: right;
+    }
+
+    @keyframes pulse-nav {
+      0%, 100% {
+        box-shadow: 0 0 10px rgba(255, 107, 107, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navigation {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+      }
+      
+      .nav-left, .nav-center, .nav-right {
+        flex: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="navigation">
+    <div class="nav-left">
+      <a href="../" class="nav-link nav-home">
+        ← 返回工具集
+      </a>
+    </div>
+    <div class="nav-center">
+      <span class="nav-brand">Gank工具集</span>
+    </div>
+    <div class="nav-right">
+      <a href="https://www.gankinterview.cn" class="nav-link nav-main-site" target="_blank">
+        🚀 访问主站
+      </a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="header">
+      <h1>🎹 键盘事件记录器</h1>
+      <p>实时捕获和分析键盘事件，了解按键的详细信息</p>
+    </div>
+
+    <div class="controls">
+      <div class="control-group">
+        <label>捕获事件类型</label>
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="captureKeydown" checked>
+            <span>Keydown</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="captureKeyup" checked>
+            <span>Keyup</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="captureKeypress" checked>
+            <span>Keypress</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>阻止默认行为</label>
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="preventDefault">
+            <span>阻止默认</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="stopPropagation">
+            <span>阻止冒泡</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>显示选项</label>
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="showTimestamp" checked>
+            <span>显示时间戳</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="autoScroll" checked>
+            <span>自动滚动</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="showVisual" checked>
+            <span>显示按键提示</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <input 
+        type="text" 
+        id="testInput" 
+        class="input-field" 
+        placeholder="在这里按下任意键来测试事件捕获..."
+        autocomplete="off"
+      >
+    </div>
+
+    <div class="stats">
+      <div class="stat-item">
+        <span class="stat-label">总事件数：</span>
+        <span class="stat-value" id="totalEvents">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Keydown：</span>
+        <span class="stat-value" id="keydownCount">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Keyup：</span>
+        <span class="stat-value" id="keyupCount">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Keypress：</span>
+        <span class="stat-value" id="keypressCount">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">最后按键：</span>
+        <span class="stat-value" id="lastKey">-</span>
+      </div>
+    </div>
+
+    <div class="events-container">
+      <div class="events-header">
+        <h2 class="events-title">📋 事件记录</h2>
+        <div class="button-group">
+          <button class="btn-secondary" onclick="exportEvents()">导出记录</button>
+          <button class="btn-primary" onclick="pauseCapture()">暂停捕获</button>
+          <button class="btn-danger" onclick="clearEvents()">清空记录</button>
+        </div>
+      </div>
+      <div class="events-area" id="eventsArea"></div>
+    </div>
+  </div>
+
+  <div class="key-visual" id="keyVisual">
+    <div class="key-visual-label">当前按键</div>
+    <div class="key-visual-value" id="keyVisualValue">-</div>
+  </div>
+
+  <script>
+    let events = [];
+    let isPaused = false;
+    let lastEventTime = Date.now();
+    let eventCounts = {
+      keydown: 0,
+      keyup: 0,
+      keypress: 0
+    };
+
+    const testInput = document.getElementById('testInput');
+    const eventsArea = document.getElementById('eventsArea');
+    const keyVisual = document.getElementById('keyVisual');
+    const keyVisualValue = document.getElementById('keyVisualValue');
+    
+    // 统计元素
+    const totalEventsEl = document.getElementById('totalEvents');
+    const keydownCountEl = document.getElementById('keydownCount');
+    const keyupCountEl = document.getElementById('keyupCount');
+    const keypressCountEl = document.getElementById('keypressCount');
+    const lastKeyEl = document.getElementById('lastKey');
+
+    // 设置选项
+    const captureKeydown = document.getElementById('captureKeydown');
+    const captureKeyup = document.getElementById('captureKeyup');
+    const captureKeypress = document.getElementById('captureKeypress');
+    const preventDefault = document.getElementById('preventDefault');
+    const stopPropagation = document.getElementById('stopPropagation');
+    const showTimestamp = document.getElementById('showTimestamp');
+    const autoScroll = document.getElementById('autoScroll');
+    const showVisual = document.getElementById('showVisual');
+
+    function handleKeyEvent(e) {
+      if (isPaused) return;
+
+      const eventType = e.type;
+      
+      // 检查是否应该捕获此类型的事件
+      if (eventType === 'keydown' && !captureKeydown.checked) return;
+      if (eventType === 'keyup' && !captureKeyup.checked) return;
+      if (eventType === 'keypress' && !captureKeypress.checked) return;
+
+      // 阻止默认行为和冒泡
+      if (preventDefault.checked) {
+        e.preventDefault();
+      }
+      if (stopPropagation.checked) {
+        e.stopPropagation();
+      }
+
+      const now = Date.now();
+      const timeSinceLastEvent = now - lastEventTime;
+      lastEventTime = now;
+
+      const eventData = {
+        type: eventType,
+        key: e.key,
+        code: e.code,
+        keyCode: e.keyCode,
+        which: e.which,
+        location: e.location,
+        ctrlKey: e.ctrlKey,
+        shiftKey: e.shiftKey,
+        altKey: e.altKey,
+        metaKey: e.metaKey,
+        repeat: e.repeat,
+        timestamp: now,
+        timeSinceLastEvent: timeSinceLastEvent
+      };
+
+      events.push(eventData);
+      eventCounts[eventType]++;
+      updateStats();
+      displayEvent(eventData);
+      
+      // 显示按键提示
+      if (showVisual.checked && eventType === 'keydown') {
+        showKeyVisual(e.key);
+      }
+    }
+
+    function displayEvent(eventData) {
+      const currentTime = new Date();
+      
+      // 检查是否需要添加分隔线
+      if (eventData.timeSinceLastEvent > 500 && eventsArea.children.length > 0) {
+        const separator = document.createElement('div');
+        separator.className = 'separator';
+        eventsArea.appendChild(separator);
+      }
+
+      const eventElement = document.createElement('div');
+      eventElement.className = 'event-item';
+
+      let html = `
+        <span class="event-type event-${eventData.type}">${eventData.type.toUpperCase()}</span>
+        <span class="event-details">
+          <span class="event-detail">
+            <span class="detail-label">key:</span>
+            <span class="detail-value">${escapeHtml(eventData.key)}</span>
+          </span>
+          <span class="event-detail">
+            <span class="detail-label">code:</span>
+            <span class="detail-value">${eventData.code}</span>
+          </span>
+          <span class="event-detail">
+            <span class="detail-label">keyCode:</span>
+            <span class="detail-value">${eventData.keyCode}</span>
+          </span>
+          <span class="event-detail">
+            <span class="detail-label">location:</span>
+            <span class="detail-value">${getLocationName(eventData.location)}</span>
+          </span>
+      `;
+
+      if (showTimestamp.checked) {
+        html += `
+          <span class="event-detail">
+            <span class="detail-label">时间:</span>
+            <span class="detail-value">${currentTime.toLocaleTimeString()}.${currentTime.getMilliseconds()}</span>
+          </span>
+        `;
+      }
+
+      html += '</span>';
+
+      // 添加修饰键标识
+      if (eventData.ctrlKey) html += '<span class="modifier-key">CTRL</span>';
+      if (eventData.shiftKey) html += '<span class="modifier-key">SHIFT</span>';
+      if (eventData.altKey) html += '<span class="modifier-key">ALT</span>';
+      if (eventData.metaKey) html += '<span class="modifier-key">META</span>';
+      if (eventData.repeat) html += '<span class="modifier-key">REPEAT</span>';
+
+      eventElement.innerHTML = html;
+      eventsArea.appendChild(eventElement);
+
+      // 自动滚动到底部
+      if (autoScroll.checked) {
+        eventsArea.scrollTop = eventsArea.scrollHeight;
+      }
+    }
+
+    function getLocationName(location) {
+      switch(location) {
+        case 0: return 'STANDARD';
+        case 1: return 'LEFT';
+        case 2: return 'RIGHT';
+        case 3: return 'NUMPAD';
+        default: return location;
+      }
+    }
+
+    function escapeHtml(text) {
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;',
+        ' ': 'Space',
+        '\t': 'Tab',
+        '\n': 'Enter',
+        '\r': 'Return'
+      };
+      return map[text] || text || '(empty)';
+    }
+
+    function updateStats() {
+      totalEventsEl.textContent = events.length;
+      keydownCountEl.textContent = eventCounts.keydown;
+      keyupCountEl.textContent = eventCounts.keyup;
+      keypressCountEl.textContent = eventCounts.keypress;
+      
+      if (events.length > 0) {
+        const lastEvent = events[events.length - 1];
+        lastKeyEl.textContent = escapeHtml(lastEvent.key);
+      }
+    }
+
+    function clearEvents() {
+      events = [];
+      eventCounts = {
+        keydown: 0,
+        keyup: 0,
+        keypress: 0
+      };
+      eventsArea.innerHTML = '';
+      updateStats();
+      lastKeyEl.textContent = '-';
+    }
+
+    function pauseCapture() {
+      isPaused = !isPaused;
+      const btn = event.target;
+      btn.textContent = isPaused ? '继续捕获' : '暂停捕获';
+      btn.className = isPaused ? 'btn-secondary' : 'btn-primary';
+    }
+
+    function exportEvents() {
+      if (events.length === 0) {
+        alert('没有事件记录可以导出');
+        return;
+      }
+
+      const exportData = {
+        exportTime: new Date().toISOString(),
+        totalEvents: events.length,
+        eventCounts: eventCounts,
+        events: events
+      };
+
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], {
+        type: 'application/json'
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `keyboard-events-${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function showKeyVisual(key) {
+      keyVisualValue.textContent = escapeHtml(key);
+      keyVisual.classList.add('active');
+      
+      clearTimeout(keyVisual.hideTimeout);
+      keyVisual.hideTimeout = setTimeout(() => {
+        keyVisual.classList.remove('active');
+      }, 1000);
+    }
+
+    // 添加事件监听器
+    testInput.addEventListener('keydown', handleKeyEvent);
+    testInput.addEventListener('keyup', handleKeyEvent);
+    testInput.addEventListener('keypress', handleKeyEvent);
+
+    // 也监听 document 级别的事件
+    document.addEventListener('keydown', handleKeyEvent);
+    document.addEventListener('keyup', handleKeyEvent);
+    document.addEventListener('keypress', handleKeyEvent);
+
+    // 页面加载时聚焦输入框
+    testInput.focus();
+  </script>
+</body>
+</html>
