@@ -1,4 +1,4 @@
-/* 全局样式重置 */
+/* Global reset */
 * {
     margin: 0;
     padding: 0;
@@ -19,7 +19,7 @@ body {
     padding: 20px;
 }
 
-/* 导航栏样式 */
+/* Navigation */
 .navigation {
     display: flex;
     justify-content: space-between;
@@ -102,7 +102,7 @@ body {
     }
 }
 
-/* 头部样式 */
+/* Header */
 .header {
     text-align: center;
     margin-bottom: 40px;
@@ -122,13 +122,13 @@ body {
     opacity: 0.9;
 }
 
-/* 主要内容区域 */
+/* Main layout */
 .main-content {
     display: grid;
     gap: 30px;
 }
 
-/* 状态显示区域 */
+/* Status section */
 .status-section {
     display: flex;
     justify-content: center;
@@ -175,7 +175,7 @@ body {
     color: #666;
 }
 
-/* 统计信息区域 */
+/* Stats section */
 .stats-section {
     background: white;
     border-radius: 20px;
@@ -216,7 +216,7 @@ body {
     font-weight: 500;
 }
 
-/* 控制按钮区域 */
+/* Control buttons */
 .controls-section {
     display: flex;
     justify-content: center;
@@ -290,7 +290,7 @@ body {
     min-width: auto;
 }
 
-/* 设置区域 */
+/* Settings */
 .settings-section {
     background: white;
     border-radius: 20px;
@@ -353,7 +353,7 @@ body {
     font-weight: bold;
 }
 
-/* 历史记录区域 */
+/* History section */
 .history-section {
     background: white;
     border-radius: 20px;
@@ -406,7 +406,7 @@ body {
     font-size: 0.9rem;
 }
 
-/* 提醒弹窗 */
+/* Alert modal */
 .alert-overlay {
     position: fixed;
     top: 0;
@@ -452,7 +452,7 @@ body {
     line-height: 1.5;
 }
 
-/* 动画 */
+/* Animations */
 @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.5; }
@@ -469,7 +469,7 @@ body {
     }
 }
 
-/* 响应式设计 */
+/* Responsive layout */
 @media (max-width: 768px) {
     .container {
         padding: 15px;

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Chinese-language web-based monitoring tools collection called "gank-tools" (Gank工具). The repository contains browser-based utilities for testing and detection purposes in educational/interview environments, specifically for ensuring compatibility with interview platforms like GankInterview.
+This is a Chinese-language web-based monitoring tools collection called "gank-tools" (Gank Tools). The repository contains browser-based utilities for testing and detection purposes in educational/interview environments, specifically for ensuring compatibility with interview platforms like GankInterview.
 
 ## Project Structure
 

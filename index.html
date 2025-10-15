@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gank工具集 - 监控检测工具箱</title>
-    <meta name="description" content="专业的网页监控检测工具集，包含切屏检测、视频检测等多种功能">
-    <meta name="keywords" content="监控工具,切屏检测,视频检测,网页工具">
+    <title>Gank Tools Suite - Monitoring Toolkit</title>
+    <meta name="description" content="Professional browser monitoring utilities including focus detection, screen sharing diagnostics, and more.">
+    <meta name="keywords" content="monitoring tools, tab switch detection, screen share, web tools">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -254,7 +254,7 @@
         }
 
         .coming-soon-overlay::after {
-            content: '即将推出';
+            content: 'Coming soon';
             position: absolute;
             top: 50%;
             left: 50%;
@@ -318,65 +318,64 @@
 <body>
     <div class="container">
         <section class="main-site-banner">
-            <h2>🚀 访问Gank面试官网</h2>
-            <p>专业的技术面试平台，提供完整的面试解决方案</p>
+            <h2>🚀 Visit the Gank Interview Platform</h2>
+            <p>A professional technical interview service with complete assessment workflows.</p>
             <a href="https://www.gankinterview.cn" class="main-site-btn" target="_blank">
-                立即访问主站 →
+                Explore the main site →
             </a>
         </section>
 
         <header class="header">
-            <h1>🛠️ Gank工具集</h1>
-            <p class="subtitle">专业的反作弊检测工具箱</p>
-            <p class="description">请在使用GankInterview之前，先使用本工具集进行检测，确保共享所有操作不会触发切屏检测，并且视频共享检测不会显示软件本身。</p>
+            <h1>🛠️ Gank Tools Suite</h1>
+            <p class="subtitle">A focused anti-cheating monitoring toolbox</p>
+            <p class="description">Run these diagnostics before joining a GankInterview session to confirm that your workflow will not trigger focus detection and that screen sharing behaves as expected.</p>
         </header>
 
         <main class="tools-grid">
             <article class="tool-card screen-detection">
                 <div class="tool-icon">📱</div>
-                <h2 class="tool-title">切屏检测</h2>
+                <h2 class="tool-title">Tab Switch Detection</h2>
                 <p class="tool-description">
-                    常见的笔试平台尤其是代码平台在笔试的过程中都会有切屏检测或者叫焦点检测，
-                    由于不同的操作系统版本的差异，强烈建议在第一次使用 GankInterview 做笔试之前，先使用该工具检测常用的操作行为是否会触发检测。
+                    Most online coding exams check whether you leave the tab during an assessment. Use this tool before your first GankInterview session to verify that your usual shortcuts and mouse interactions do not trigger an alert.
                 </p>
                 <div class="tool-actions">
-                    <a href="./screen_switch_detection/" class="btn btn-primary">开始检测</a>
+                    <a href="./screen_switch_detection/" class="btn btn-primary">Start detection</a>
                 </div>
             </article>
 
             <article class="tool-card video-detection">
                 <div class="tool-icon">🎥</div>
-                <h2 class="tool-title">视频共享可见检测</h2>
+                <h2 class="tool-title">Screen Share Visibility</h2>
                 <p class="tool-description">
-                    该工具用于模拟视频面试的时候面试官是否能看见GankInterview。由于操作系统版本差异强烈建议在第一次使用GankInterview进行视频面试之前进行检测。
+                    Confirm that interviewers can see GankInterview during a video call. System-level differences can impact what is captured, so run this check before your first video interview.
                 </p>
 
                 <div class="tool-actions">
-                    <a href="./video_detection/screen-share-demo.html" class="btn btn-secondary">开始检测</a>
+                    <a href="./video_detection/screen-share-demo.html" class="btn btn-secondary">Start detection</a>
                 </div>
             </article>
 
             <article class="tool-card keyboard-detection">
                 <div class="tool-icon">⌨️</div>
-                <h2 class="tool-title">键盘事件检测</h2>
+                <h2 class="tool-title">Keyboard Event Monitor</h2>
                 <p class="tool-description">
-                    实时捕获和分析键盘事件，用于测试键盘输入行为是否会被监控系统检测。支持详细的按键信息记录和导出功能。
+                    Capture and analyze keyboard events in real time to understand what data monitoring systems can collect. Includes detailed logging and export features.
                 </p>
 
                 <div class="tool-actions">
-                    <a href="./keyboard_detection/keyboard-event-recorder.html" class="btn btn-primary">开始检测</a>
+                    <a href="./keyboard_detection/keyboard-event-recorder.html" class="btn btn-primary">Start detection</a>
                 </div>
             </article>
 
         </main>
 
         <footer class="footer">
-            <p>&copy; 2024 Gank工具集. 保留所有权利.</p>
+            <p>&copy; 2024 Gank Tools Suite. All rights reserved.</p>
         </footer>
     </div>
 
     <script>
-        // 添加页面加载动画
+        // Animate cards when the page loads
         document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.tool-card');
             cards.forEach((card, index) => {

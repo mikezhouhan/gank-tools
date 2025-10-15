@@ -1,4 +1,4 @@
-// 切屏检测器主要逻辑
+// Main logic for the tab switch detector
 class ScreenSwitchDetector {
     constructor() {
         this.isMonitoring = false;
@@ -18,7 +18,7 @@ class ScreenSwitchDetector {
     }
 
     initializeElements() {
-        // 获取DOM元素
+        // Cache DOM elements
         this.elements = {
             statusIndicator: document.getElementById('statusIndicator'),
             statusDot: document.getElementById('statusDot'),
@@ -46,17 +46,17 @@ class ScreenSwitchDetector {
     }
 
     bindEvents() {
-        // 页面可见性变化事件
+        // Page visibility events
         document.addEventListener('visibilitychange', () => this.handleVisibilityChange());
         
-        // 窗口焦点事件
+        // Window focus events
         window.addEventListener('focus', () => this.handleFocus());
         window.addEventListener('blur', () => this.handleBlur());
         
-        // 全屏事件
+        // Fullscreen events
         document.addEventListener('fullscreenchange', () => this.handleFullscreenChange());
         
-        // 按钮事件
+        // Button handlers
         this.elements.startBtn.addEventListener('click', () => this.startMonitoring());
         this.elements.pauseBtn.addEventListener('click', () => this.pauseMonitoring());
         this.elements.resetBtn.addEventListener('click', () => this.resetData());
@@ -65,7 +65,7 @@ class ScreenSwitchDetector {
         this.elements.exportBtn.addEventListener('click', () => this.exportData());
         this.elements.alertCloseBtn.addEventListener('click', () => this.closeAlert());
         
-        // 设置变化事件
+        // Persist settings when toggled
         Object.keys(this.elements).forEach(key => {
             if (key.includes('Alert') || key.includes('record') || key.includes('Detection')) {
                 const element = this.elements[key];
@@ -75,7 +75,7 @@ class ScreenSwitchDetector {
             }
         });
 
-        // 键盘快捷键
+        // Keyboard shortcuts
         document.addEventListener('keydown', (e) => this.handleKeydown(e));
     }
 
@@ -148,20 +148,16 @@ class ScreenSwitchDetector {
         if (!this.elements.fullscreenDetection.checked) return;
         
         const isFullscreen = !!document.fullscreenElement;
-        if (isFullscreen) {
-            this.elements.fullscreenBtn.textContent = '退出全屏';
-        } else {
-            this.elements.fullscreenBtn.textContent = '进入全屏';
-        }
+        this.elements.fullscreenBtn.textContent = isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen';
     }
 
     handleKeydown(e) {
-        // ESC键退出全屏
+        // ESC exits fullscreen
         if (e.key === 'Escape' && document.fullscreenElement) {
             document.exitFullscreen();
         }
         
-        // 空格键暂停/开始监控
+        // Space toggles monitoring
         if (e.code === 'Space' && e.target.tagName !== 'INPUT') {
             e.preventDefault();
             if (this.isMonitoring) {
@@ -189,7 +185,7 @@ class ScreenSwitchDetector {
     }
 
     resetData() {
-        if (confirm('确定要重置所有数据吗？此操作不可撤销。')) {
+        if (confirm('Reset all data? This action cannot be undone.')) {
             this.switchCount = 0;
             this.totalAwayTime = 0;
             this.longestAwayTime = 0;
@@ -211,7 +207,7 @@ class ScreenSwitchDetector {
     }
 
     clearHistory() {
-        if (confirm('确定要清空历史记录吗？')) {
+        if (confirm('Clear the entire history?')) {
             this.history = [];
             this.updateHistoryDisplay();
         }
@@ -248,7 +244,7 @@ class ScreenSwitchDetector {
     }
 
     playAlertSound() {
-        // 创建音频上下文和振荡器来生成提醒音
+        // Generate a quick tone as the alert sound
         try {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
             const oscillator = audioContext.createOscillator();
@@ -267,10 +263,10 @@ class ScreenSwitchDetector {
             oscillator.start(audioContext.currentTime);
             oscillator.stop(audioContext.currentTime + 0.3);
         } catch (e) {
-            // 备用方案：使用HTML音频元素
+            // Fallback to the bundled audio element
             this.elements.alertSound.currentTime = 0;
             this.elements.alertSound.play().catch(err => {
-                console.log('无法播放提醒音效:', err);
+                console.log('Unable to play the alert sound:', err);
             });
         }
     }
@@ -283,7 +279,7 @@ class ScreenSwitchDetector {
             formattedDuration: this.formatTime(duration)
         });
         
-        // 限制历史记录数量
+        // Keep the history capped
         if (this.history.length > 100) {
             this.history = this.history.slice(0, 100);
         }
@@ -294,10 +290,10 @@ class ScreenSwitchDetector {
     updateStatusDisplay(isActive) {
         if (isActive) {
             this.elements.statusDot.classList.remove('away');
-            this.elements.statusText.textContent = '页面活跃';
+            this.elements.statusText.textContent = 'Page active';
         } else {
             this.elements.statusDot.classList.add('away');
-            this.elements.statusText.textContent = '已离开页面';
+            this.elements.statusText.textContent = 'Away from page';
         }
     }
 
@@ -310,14 +306,14 @@ class ScreenSwitchDetector {
 
     updateHistoryDisplay() {
         if (this.history.length === 0) {
-            this.elements.historyList.innerHTML = '<div class="history-empty">暂无切屏记录</div>';
+            this.elements.historyList.innerHTML = '<div class="history-empty">No focus switches recorded yet</div>';
             return;
         }
         
         const historyHTML = this.history.map(record => `
             <div class="history-item">
                 <span class="history-time">${record.formattedTime}</span>
-                <span class="history-duration">离开 ${record.formattedDuration}</span>
+                <span class="history-duration">Away for ${record.formattedDuration}</span>
             </div>
         `).join('');
         
@@ -389,7 +385,7 @@ class ScreenSwitchDetector {
     }
 }
 
-// 初始化应用
+// Boot the app
 document.addEventListener('DOMContentLoaded', () => {
     new ScreenSwitchDetector();
 });

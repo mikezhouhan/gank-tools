@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>屏幕共享演示 - 类似笔试网站</title>
+    <title>Screen Share Demo - Exam Style</title>
     <style>
         * {
             margin: 0;
@@ -27,7 +27,7 @@
             overflow: hidden;
         }
 
-        /* 导航栏样式 */
+        /* Navigation */
         .navigation {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -327,54 +327,54 @@
     </style>
 </head>
 <body>
-    <!-- 导航栏 -->
+    <!-- Navigation -->
     <nav class="navigation">
         <div class="nav-left">
             <a href="../" class="nav-link nav-home">
-                ← 返回工具集
+                ← Back to tools
             </a>
         </div>
         <div class="nav-center">
-            <span class="nav-brand">Gank工具集</span>
+            <span class="nav-brand">Gank Tools Suite</span>
         </div>
         <div class="nav-right">
             <a href="https://www.gankinterview.cn" class="nav-link nav-main-site" target="_blank">
-                🚀 访问主站
+                🚀 Go to main site
             </a>
         </div>
     </nav>
 
     <div class="container">
         <div class="header">
-            <h1>🖥️ 屏幕共享演示</h1>
-            <p>请打开 GankInterview 然后观察下方的预览中是否能看见</p>
+            <h1>🖥️ Screen Share Demo</h1>
+            <p>Open GankInterview and confirm whether it appears in the previews below.</p>
         </div>
 
         <div class="controls">
             <div class="status inactive" id="status">
-                📱 未开始屏幕共享
+                📱 Screen sharing not started
             </div>
 
             <div class="button-group">
                 <button class="btn btn-primary" id="shareFullScreen">
-                    🖥️ 共享整个屏幕
+                    🖥️ Share entire screen
                 </button>
                 <button class="btn btn-secondary" id="shareWindow">
-                    🪟 共享应用窗口
+                    🪟 Share an application window
                 </button>
                 <button class="btn btn-danger" id="stopShare" disabled>
-                    ⏹️ 停止共享
+                    ⏹️ Stop sharing
                 </button>
             </div>
 
             <div class="info-panel">
-                <h4>📋 使用说明</h4>
+                <h4>📋 How to use</h4>
                 <ul>
-                    <li>点击"共享整个屏幕"可以共享您的完整桌面</li>
-                    <li>点击"共享应用窗口"可以选择特定的应用程序窗口</li>
-                    <li>共享开始后，您可以在下方看到实时预览</li>
-                    <li>点击"停止共享"结束屏幕共享</li>
-                    <li>⚠️ 需要现代浏览器支持（Chrome、Firefox、Edge等）</li>
+                    <li>Select “Share entire screen” to capture your full desktop.</li>
+                    <li>Select “Share an application window” to pick a specific app.</li>
+                    <li>Once sharing starts, both previews will update in real time.</li>
+                    <li>Choose “Stop sharing” to end the session.</li>
+                    <li>⚠️ Requires a modern browser (Chrome, Firefox, Edge, etc.).</li>
                 </ul>
             </div>
 
@@ -383,23 +383,23 @@
 
         <div class="preview-section">
             <h2 style="text-align: center; color: #495057; margin-bottom: 20px;">
-                📺 实时预览
+                📺 Live preview
             </h2>
             
             <div class="preview-container">
                 <div class="preview-box" id="localPreview">
-                    <h3>本地预览</h3>
+                    <h3>Local preview</h3>
                     <div class="placeholder" id="localPlaceholder">
                         <div class="placeholder-icon">📺</div>
-                        <p>等待开始屏幕共享...</p>
+                        <p>Waiting for screen share to begin…</p>
                     </div>
                 </div>
                 
                 <div class="preview-box" id="remotePreview">
-                    <h3>远程视图模拟</h3>
+                    <h3>Remote view (simulated)</h3>
                     <div class="placeholder" id="remotePlaceholder">
                         <div class="placeholder-icon">🌐</div>
-                        <p>这里显示其他人看到的画面</p>
+                        <p>This area represents what others see.</p>
                     </div>
                 </div>
             </div>
@@ -460,21 +460,21 @@
             }
 
             createVideoElements() {
-                // 创建本地预览视频
+                // Create the local preview video
                 const localVideo = document.createElement('video');
                 localVideo.srcObject = this.localStream;
                 localVideo.autoplay = true;
                 localVideo.muted = true;
                 localVideo.className = 'preview-video';
                 
-                // 创建远程预览视频（模拟）
+                // Create the remote preview video (simulated)
                 const remoteVideo = document.createElement('video');
                 remoteVideo.srcObject = this.localStream;
                 remoteVideo.autoplay = true;
                 remoteVideo.muted = true;
                 remoteVideo.className = 'preview-video';
 
-                // 替换占位符
+                // Hide placeholders
                 this.localPlaceholder.style.display = 'none';
                 this.remotePlaceholder.style.display = 'none';
                 
@@ -497,11 +497,11 @@
                     this.localStream = null;
                 }
 
-                // 清理视频元素
+                // Remove existing video elements
                 const videos = document.querySelectorAll('.preview-video');
                 videos.forEach(video => video.remove());
 
-                // 恢复占位符
+                // Restore placeholders
                 this.localPlaceholder.style.display = 'flex';
                 this.remotePlaceholder.style.display = 'flex';
                 
@@ -515,13 +515,13 @@
                 this.isSharing = isSharing;
                 
                 if (isSharing) {
-                    this.status.textContent = '🟢 正在共享屏幕';
+                    this.status.textContent = '🟢 Screen sharing in progress';
                     this.status.className = 'status active';
                     this.shareFullScreenBtn.disabled = true;
                     this.shareWindowBtn.disabled = true;
                     this.stopShareBtn.disabled = false;
                 } else {
-                    this.status.textContent = '📱 未开始屏幕共享';
+                    this.status.textContent = '📱 Screen sharing not started';
                     this.status.className = 'status inactive';
                     this.shareFullScreenBtn.disabled = false;
                     this.shareWindowBtn.disabled = false;
@@ -530,22 +530,22 @@
             }
 
             handleError(error) {
-                console.error('屏幕共享错误:', error);
+                console.error('Screen sharing error:', error);
                 
-                let errorMessage = '未知错误';
+                let errorMessage = 'Unknown error';
                 if (error.name === 'NotAllowedError') {
-                    errorMessage = '用户拒绝了屏幕共享权限';
+                    errorMessage = 'Permission to share the screen was denied.';
                 } else if (error.name === 'NotSupportedError') {
-                    errorMessage = '浏览器不支持屏幕共享功能';
+                    errorMessage = 'Screen sharing is not supported in this browser.';
                 } else if (error.name === 'NotFoundError') {
-                    errorMessage = '没有找到可共享的屏幕或窗口';
+                    errorMessage = 'No screens or windows were available to share.';
                 } else if (error.name === 'AbortError') {
-                    errorMessage = '用户取消了屏幕共享';
+                    errorMessage = 'Screen sharing was cancelled.';
                 }
 
                 const errorDiv = document.createElement('div');
                 errorDiv.className = 'error-message';
-                errorDiv.innerHTML = `❌ 屏幕共享失败: ${errorMessage}`;
+                errorDiv.innerHTML = `❌ Screen sharing failed: ${errorMessage}`;
                 
                 this.status.parentNode.insertBefore(errorDiv, this.status.nextSibling);
                 
@@ -555,16 +555,16 @@
             }
         }
 
-        // 检查浏览器支持
+        // Check for browser support
         if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
             document.body.innerHTML = `
                 <div style="text-align: center; padding: 50px; color: #721c24; background: #f8d7da;">
-                    <h1>❌ 浏览器不支持</h1>
-                    <p>您的浏览器不支持屏幕共享功能。请使用现代浏览器如 Chrome、Firefox 或 Edge。</p>
+                    <h1>❌ Browser Not Supported</h1>
+                    <p>Your current browser does not support screen sharing. Please switch to a modern browser such as Chrome, Firefox, or Edge.</p>
                 </div>
             `;
         } else {
-            // 初始化应用
+            // Initialize the demo
             document.addEventListener('DOMContentLoaded', () => {
                 new ScreenShareDemo();
             });

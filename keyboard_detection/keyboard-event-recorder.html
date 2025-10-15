@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>键盘事件记录器</title>
+  <title>Keyboard Event Recorder</title>
   <style>
     * {
       margin: 0;
@@ -359,7 +359,7 @@
       background: #764ba2;
     }
 
-    /* 导航栏样式 */
+    /* Navigation */
     .navigation {
       display: flex;
       justify-content: space-between;
@@ -444,32 +444,32 @@
   </style>
 </head>
 <body>
-  <!-- 导航栏 -->
+  <!-- Navigation -->
   <nav class="navigation">
     <div class="nav-left">
       <a href="../" class="nav-link nav-home">
-        ← 返回工具集
+        ← Back to tools
       </a>
     </div>
     <div class="nav-center">
-      <span class="nav-brand">Gank工具集</span>
+      <span class="nav-brand">Gank Tools Suite</span>
     </div>
     <div class="nav-right">
       <a href="https://www.gankinterview.cn" class="nav-link nav-main-site" target="_blank">
-        🚀 访问主站
+        🚀 Go to main site
       </a>
     </div>
   </nav>
 
   <div class="container">
     <div class="header">
-      <h1>🎹 键盘事件记录器</h1>
-      <p>实时捕获和分析键盘事件，了解按键的详细信息</p>
+      <h1>🎹 Keyboard Event Recorder</h1>
+      <p>Capture keyboard activity in real time and inspect every detail.</p>
     </div>
 
     <div class="controls">
       <div class="control-group">
-        <label>捕获事件类型</label>
+        <label>Event types to capture</label>
         <div class="checkbox-group">
           <label class="checkbox-label">
             <input type="checkbox" id="captureKeydown" checked>
@@ -487,33 +487,33 @@
       </div>
 
       <div class="control-group">
-        <label>阻止默认行为</label>
+        <label>Block default behavior</label>
         <div class="checkbox-group">
           <label class="checkbox-label">
             <input type="checkbox" id="preventDefault">
-            <span>阻止默认</span>
+            <span>Prevent default</span>
           </label>
           <label class="checkbox-label">
             <input type="checkbox" id="stopPropagation">
-            <span>阻止冒泡</span>
+            <span>Stop propagation</span>
           </label>
         </div>
       </div>
 
       <div class="control-group">
-        <label>显示选项</label>
+        <label>Display options</label>
         <div class="checkbox-group">
           <label class="checkbox-label">
             <input type="checkbox" id="showTimestamp" checked>
-            <span>显示时间戳</span>
+            <span>Show timestamp</span>
           </label>
           <label class="checkbox-label">
             <input type="checkbox" id="autoScroll" checked>
-            <span>自动滚动</span>
+            <span>Auto-scroll</span>
           </label>
           <label class="checkbox-label">
             <input type="checkbox" id="showVisual" checked>
-            <span>显示按键提示</span>
+            <span>Show key overlay</span>
           </label>
         </div>
       </div>
@@ -524,14 +524,14 @@
         type="text" 
         id="testInput" 
         class="input-field" 
-        placeholder="在这里按下任意键来测试事件捕获..."
+        placeholder="Press any key here to test the capture..."
         autocomplete="off"
       >
     </div>
 
     <div class="stats">
       <div class="stat-item">
-        <span class="stat-label">总事件数：</span>
+        <span class="stat-label">Total events:</span>
         <span class="stat-value" id="totalEvents">0</span>
       </div>
       <div class="stat-item">
@@ -547,18 +547,18 @@
         <span class="stat-value" id="keypressCount">0</span>
       </div>
       <div class="stat-item">
-        <span class="stat-label">最后按键：</span>
+        <span class="stat-label">Last key:</span>
         <span class="stat-value" id="lastKey">-</span>
       </div>
     </div>
 
     <div class="events-container">
       <div class="events-header">
-        <h2 class="events-title">📋 事件记录</h2>
+        <h2 class="events-title">📋 Event log</h2>
         <div class="button-group">
-          <button class="btn-secondary" onclick="exportEvents()">导出记录</button>
-          <button class="btn-primary" onclick="pauseCapture()">暂停捕获</button>
-          <button class="btn-danger" onclick="clearEvents()">清空记录</button>
+          <button class="btn-secondary" onclick="exportEvents()">Export log</button>
+          <button class="btn-primary" onclick="pauseCapture()">Pause capture</button>
+          <button class="btn-danger" onclick="clearEvents()">Clear log</button>
         </div>
       </div>
       <div class="events-area" id="eventsArea"></div>
@@ -566,7 +566,7 @@
   </div>
 
   <div class="key-visual" id="keyVisual">
-    <div class="key-visual-label">当前按键</div>
+    <div class="key-visual-label">Current key</div>
     <div class="key-visual-value" id="keyVisualValue">-</div>
   </div>
 
@@ -585,14 +585,14 @@
     const keyVisual = document.getElementById('keyVisual');
     const keyVisualValue = document.getElementById('keyVisualValue');
     
-    // 统计元素
+    // Stats elements
     const totalEventsEl = document.getElementById('totalEvents');
     const keydownCountEl = document.getElementById('keydownCount');
     const keyupCountEl = document.getElementById('keyupCount');
     const keypressCountEl = document.getElementById('keypressCount');
     const lastKeyEl = document.getElementById('lastKey');
 
-    // 设置选项
+    // Toggle options
     const captureKeydown = document.getElementById('captureKeydown');
     const captureKeyup = document.getElementById('captureKeyup');
     const captureKeypress = document.getElementById('captureKeypress');
@@ -607,12 +607,12 @@
 
       const eventType = e.type;
       
-      // 检查是否应该捕获此类型的事件
+      // Only capture selected event types
       if (eventType === 'keydown' && !captureKeydown.checked) return;
       if (eventType === 'keyup' && !captureKeyup.checked) return;
       if (eventType === 'keypress' && !captureKeypress.checked) return;
 
-      // 阻止默认行为和冒泡
+      // Optional prevention logic
       if (preventDefault.checked) {
         e.preventDefault();
       }
@@ -645,7 +645,7 @@
       updateStats();
       displayEvent(eventData);
       
-      // 显示按键提示
+      // Show optional key overlay
       if (showVisual.checked && eventType === 'keydown') {
         showKeyVisual(e.key);
       }
@@ -654,7 +654,7 @@
     function displayEvent(eventData) {
       const currentTime = new Date();
       
-      // 检查是否需要添加分隔线
+      // Add separators when events are far apart
       if (eventData.timeSinceLastEvent > 500 && eventsArea.children.length > 0) {
         const separator = document.createElement('div');
         separator.className = 'separator';
@@ -688,7 +688,7 @@
       if (showTimestamp.checked) {
         html += `
           <span class="event-detail">
-            <span class="detail-label">时间:</span>
+            <span class="detail-label">Time:</span>
             <span class="detail-value">${currentTime.toLocaleTimeString()}.${currentTime.getMilliseconds()}</span>
           </span>
         `;
@@ -696,7 +696,7 @@
 
       html += '</span>';
 
-      // 添加修饰键标识
+      // Add modifier badges
       if (eventData.ctrlKey) html += '<span class="modifier-key">CTRL</span>';
       if (eventData.shiftKey) html += '<span class="modifier-key">SHIFT</span>';
       if (eventData.altKey) html += '<span class="modifier-key">ALT</span>';
@@ -706,7 +706,7 @@
       eventElement.innerHTML = html;
       eventsArea.appendChild(eventElement);
 
-      // 自动滚动到底部
+      // Auto-scroll to the latest entry
       if (autoScroll.checked) {
         eventsArea.scrollTop = eventsArea.scrollHeight;
       }
@@ -764,13 +764,13 @@
     function pauseCapture() {
       isPaused = !isPaused;
       const btn = event.target;
-      btn.textContent = isPaused ? '继续捕获' : '暂停捕获';
+      btn.textContent = isPaused ? 'Resume capture' : 'Pause capture';
       btn.className = isPaused ? 'btn-secondary' : 'btn-primary';
     }
 
     function exportEvents() {
       if (events.length === 0) {
-        alert('没有事件记录可以导出');
+        alert('There are no captured events to export.');
         return;
       }
 
@@ -802,17 +802,17 @@
       }, 1000);
     }
 
-    // 添加事件监听器
+    // Attach listeners
     testInput.addEventListener('keydown', handleKeyEvent);
     testInput.addEventListener('keyup', handleKeyEvent);
     testInput.addEventListener('keypress', handleKeyEvent);
 
-    // 也监听 document 级别的事件
+    // Also capture at the document level
     document.addEventListener('keydown', handleKeyEvent);
     document.addEventListener('keyup', handleKeyEvent);
     document.addEventListener('keypress', handleKeyEvent);
 
-    // 页面加载时聚焦输入框
+    // Focus the input once the page loads
     testInput.focus();
   </script>
 </body>
