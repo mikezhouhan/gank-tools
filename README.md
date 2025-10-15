@@ -2,11 +2,11 @@
 
 A professional toolbox of browser monitoring utilities with multiple practical detection features.
 
-> 🚀 **Main Site**: [https://www.gankinterview.cn](https://www.gankinterview.cn) – a dedicated technical interview platform
+> 🚀 **Main Site**: [https://www.gankinterview.com](https://www.gankinterview.com) – a dedicated technical interview platform
 
 ## 🌟 Try It Online
 
-Visit [https://tools.gankinterview.cn](https://tools.gankinterview.cn) to launch every tool in the suite.
+Visit [https://tools.gankinterview.com](https://tools.gankinterview.com) to launch every tool in the suite.
 
 ## 📋 Tool Catalog
 
@@ -122,4 +122,4 @@ Issues and pull requests are always welcome!
 ## 📞 Contact
 
 - GitHub Issues: [Report a problem](https://github.com/mikezhouhan/gank-tools/issues)
-- Email: support@mail.gankinterview.cn
+- Email: support@mail.gankinterview.com
